@@ -1,4 +1,3 @@
-// Import required modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const morgan = require('morgan'); // For logging HTTP requests
@@ -41,7 +40,7 @@ app.post('/admin-login', (req, res) => {
  * Endpoint: POST /add-patient
  * Request Body: { injury: string, painLevel: number }
  */
-app.post('/add-patient', (req, res) => {
+app.post('/add-patient', async (req, res) => {
     const { injury, painLevel } = req.body;
 
     // Validate input
@@ -50,7 +49,7 @@ app.post('/add-patient', (req, res) => {
     }
 
     try {
-        const newPatient = addPatient(injury, painLevel);
+        const newPatient = await addPatient(injury, painLevel);
         res.status(201).json(newPatient);
     } catch (err) {
         console.error("Error adding patient:", err.message);
@@ -62,9 +61,9 @@ app.post('/add-patient', (req, res) => {
  * Get the sorted list of all patients.
  * Endpoint: GET /get-patients
  */
-app.get('/get-patients', (req, res) => {
+app.get('/get-patients', async (req, res) => {
     try {
-        const patients = getPatients();
+        const patients = await getPatients();
         res.status(200).json(patients);
     } catch (err) {
         console.error("Error fetching patients:", err.message);
@@ -77,7 +76,7 @@ app.get('/get-patients', (req, res) => {
  * Endpoint: POST /mark-as-treated
  * Request Body: { id: number }
  */
-app.post('/mark-as-treated', (req, res) => {
+app.post('/mark-as-treated', async (req, res) => {
     const { id } = req.body;
 
     if (!id || typeof id !== 'number') {
@@ -85,7 +84,7 @@ app.post('/mark-as-treated', (req, res) => {
     }
 
     try {
-        const success = markAsTreated(id);
+        const success = await markAsTreated(id);
         if (success) {
             res.status(200).json({ message: 'Patient marked as treated.' });
         } else {

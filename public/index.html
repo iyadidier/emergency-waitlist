@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <header class="header-container">
         <h1 class="main-title">Welcome to the Hospital Triage App</h1>
@@ -24,13 +26,13 @@
         <section id="admin-login" class="section-area" style="display: none;">
             <h2 class="section-title">Administrator Login</h2>
             <p class="section-description">Log in to manage the triage system and oversee the emergency room queue.</p>
-            <form id="admin-login-form" class="login-form">
+            <form id="admin-login-form" class="login-form" aria-labelledby="admin-login">
                 <label for="admin-username">Username:</label>
                 <input type="text" id="admin-username" class="form-input" placeholder="Enter your username" required>
-                
+
                 <label for="admin-password">Password:</label>
                 <input type="password" id="admin-password" class="form-input" placeholder="Enter your password" required>
-                
+
                 <button type="submit" class="btn-action">Login</button>
             </form>
         </section>
@@ -56,13 +58,12 @@
                 </tbody>
             </table>
         </section>
-        
 
         <!-- Patient Submission Section -->
         <section id="patient-form" class="section-area" style="display: none;">
             <h2 class="section-title">Patient Information</h2>
             <p class="section-description">Provide your details to get an estimate of your wait time in the emergency queue.</p>
-            <form id="patient-input-form" class="submission-form">
+            <form id="patient-input-form" class="submission-form" aria-labelledby="patient-form">
                 <label for="injury">Injury Type:</label>
                 <select id="injury" class="form-input" required>
                     <option value="">Choose Injury</option>
@@ -74,21 +75,22 @@
                     <option value="Bone/Muscle">Bone or Muscle</option>
                     <option value="Burn/Cut">Burn or Cut</option>
                 </select>
-        
+
                 <label for="pain-level">Pain Level (1-10):</label>
                 <input type="number" id="pain-level" class="form-input" min="1" max="10" placeholder="Rate your pain" required>
-                
+
                 <button type="submit" class="btn-action">Submit</button>
             </form>
             <p id="wait-time" class="wait-time-info"></p>
         </section>
-        
+
     </main>
 
-    <footer class="footer-area">
+    <footer class="footer-area" id="footer">
         <p>&copy; 2024 Hospital Triage App | All Rights Reserved</p>
     </footer>
 
     <script src="script.js" defer></script>
 </body>
+
 </html>

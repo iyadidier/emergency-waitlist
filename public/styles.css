@@ -3,16 +3,16 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f7fb; /* Light, soft gray-blue background */
-    color: #333;
+    background-color: #f8f4e3; /* Soft beige background */
+    color: #3e3b3a; /* Warm dark gray text for better contrast */
 }
 
 header, footer {
     text-align: center;
     padding: 25px;
-    background-color: #4e73df; /* Soft blue for header and footer */
+    background-color: #b49e76; /* Warm beige-brown for header/footer */
     color: white;
-    border-bottom: 3px solid #2e59d9; /* Darker blue border */
+    border-bottom: 3px solid #9a7c56; /* Slightly darker beige for border */
 }
 
 main {
@@ -21,18 +21,19 @@ main {
     margin: 0 auto;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 h1, h2 {
     margin-bottom: 20px;
     font-weight: 700;
+    color: #6d4f2e; /* Warm dark brown for headings */
 }
 
 p {
     margin-bottom: 20px;
     font-size: 1.1rem;
-    color: #555; /* Slightly muted text color */
+    color: #5a4d42; /* Muted brown-gray text */
 }
 
 /* Utility Classes */
@@ -44,7 +45,7 @@ p {
     display: inline-block;
     padding: 12px 24px;
     color: white;
-    background-color: #6c5ce7; /* Lavender for buttons */
+    background-color: #a67c52; /* Soft brown-beige for buttons */
     border: none;
     border-radius: 5px;
     font-size: 1.1rem;
@@ -53,7 +54,7 @@ p {
 }
 
 .btn-action:hover {
-    background-color: #5e50e6; /* Slightly darker lavender */
+    background-color: #8f6b44; /* Slightly darker brown on hover */
     transform: scale(1.05);
 }
 
@@ -61,7 +62,7 @@ p {
     width: 100%;
     padding: 14px;
     margin-bottom: 20px;
-    border: 1px solid #dcdcdc;
+    border: 1px solid #d4c7b0; /* Light tan border for inputs */
     border-radius: 5px;
     font-size: 1rem;
     box-sizing: border-box;
@@ -69,39 +70,39 @@ p {
 }
 
 .form-input:focus, .role-dropdown:focus {
-    border-color: #6c5ce7; /* Lavender focus for inputs */
+    border-color: #a67c52; /* Brown-beige focus for inputs */
     outline: none;
 }
 
 .role-dropdown {
-    background-color: #f1f8ff;
+    background-color: #faf5e2; /* Light cream background for dropdown */
 }
 
 .patient-table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .patient-table th, .patient-table td {
     padding: 15px;
     text-align: left;
-    border: 1px solid #f1f1f1;
-    color: #333;
+    border: 1px solid #e1d7c6; /* Light beige-gray border for table cells */
+    color: #3e3b3a; /* Dark gray text for readability */
 }
 
 .patient-table th {
-    background-color: #4e73df; /* Soft blue for header cells */
+    background-color: #b49e76; /* Beige-brown header cells */
     color: white;
 }
 
 .patient-table td {
-    background-color: #fafafa;
+    background-color: #f9f4e1; /* Very light beige rows */
 }
 
 .patient-table tr:hover {
-    background-color: #f1f8ff; /* Soft hover effect */
+    background-color: #f0e1c6; /* Soft beige hover effect */
 }
 
 .section-area {
@@ -112,17 +113,17 @@ p {
     margin-bottom: 15px;
     font-size: 1.8rem;
     font-weight: 600;
-    color: #333;
+    color: #6d4f2e; /* Warm dark brown for section titles */
 }
 
 .section-description {
     font-size: 1.1rem;
     margin-bottom: 20px;
-    color: #666;
+    color: #7d6a4e; /* Light brown-gray for descriptions */
 }
 
 .wait-time-info {
-    color: #ff9f00; /* Warm accent color for wait-time info */
+    color: #e69c3d; /* Warm golden accent for wait-time info */
     font-size: 1.1rem;
     margin-top: 20px;
 }
@@ -130,7 +131,7 @@ p {
 .footer-area {
     margin-top: 30px;
     font-size: 0.9rem;
-    color: #f4f4f4;
+    color: #d0c7b7; /* Light beige for footer text */
 }
 
 footer p {

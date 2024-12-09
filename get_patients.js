@@ -1,5 +1,4 @@
-// In-memory data for patients
-let patients = [];
+const pool = require('./db'); // Database connection
 
 /**
  * Add a new patient to the queue.
@@ -7,36 +6,40 @@ let patients = [];
  * @param {number} painLevel - Pain level (1-10).
  * @returns {object} - The newly added patient with estimated wait time.
  */
-function addPatient(injury, painLevel) {
+async function addPatient(injury, painLevel) {
     if (!injury || typeof painLevel !== 'number') {
         throw new Error("Invalid injury or pain level");
     }
 
     console.log("Adding patient with:", { injury, painLevel });
 
-    const newPatient = {
-        id: patients.length + 1,
-        injury,
-        painLevel,
-        timestamp: Date.now(),
-    };
+    const query = 'INSERT INTO patients (injury, pain_level) VALUES ($1, $2) RETURNING *';
+    const values = [injury, painLevel];
 
-    patients.push(newPatient);
+    try {
+        const result = await pool.query(query, values);
+        const newPatient = result.rows[0];
 
-    // Calculate approximate wait time (e.g., based on queue length or pain level)
-    const waitTime = patients.length * 10; // Example: 10 minutes per patient
-    return { ...newPatient, waitTime };
+        // Calculate approximate wait time (e.g., based on queue length or pain level)
+        const waitTime = await calculateWaitTime(); // You can adjust how you calculate this
+        return { ...newPatient, waitTime };
+    } catch (err) {
+        throw new Error("Error adding patient: " + err.message);
+    }
 }
 
 /**
  * Get the list of patients sorted by priority (pain level and timestamp).
  * @returns {Array} - Sorted list of patients.
  */
-function getPatients() {
-    return patients.sort((a, b) => {
-        if (b.painLevel !== a.painLevel) return b.painLevel - a.painLevel;
-        return a.timestamp - b.timestamp;
-    });
+async function getPatients() {
+    const query = 'SELECT * FROM patients ORDER BY pain_level DESC, timestamp ASC';
+    try {
+        const result = await pool.query(query);
+        return result.rows; // Return the list of patients from the database
+    } catch (err) {
+        throw new Error("Error fetching patients: " + err.message);
+    }
 }
 
 /**
@@ -44,13 +47,30 @@ function getPatients() {
  * @param {number} id - ID of the patient to mark as treated.
  * @returns {boolean} - True if the patient was successfully removed, false otherwise.
  */
-function markAsTreated(id) {
-    const index = patients.findIndex(patient => patient.id === id);
-    if (index !== -1) {
-        patients.splice(index, 1);
-        return true;
+async function markAsTreated(id) {
+    const query = 'UPDATE patients SET treated = TRUE WHERE patient_id = $1 RETURNING *';
+    const values = [id];
+    try {
+        const result = await pool.query(query, values);
+        return result.rowCount > 0; // Return true if the patient was marked as treated
+    } catch (err) {
+        throw new Error("Error marking patient as treated: " + err.message);
     }
-    return false;
+}
+
+/**
+ * Calculate the estimated wait time based on the number of patients in the queue.
+ * @returns {number} - Estimated wait time in minutes.
+ */
+async function calculateWaitTime() {
+    const query = 'SELECT COUNT(*) FROM patients WHERE treated = FALSE';
+    try {
+        const result = await pool.query(query);
+        const patientCount = parseInt(result.rows[0].count);
+        return patientCount * 10; // Example: 10 minutes per patient in the queue
+    } catch (err) {
+        throw new Error("Error calculating wait time: " + err.message);
+    }
 }
 
 module.exports = { addPatient, getPatients, markAsTreated };
