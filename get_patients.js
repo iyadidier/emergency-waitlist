@@ -1,58 +1,56 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-
-const app = express();
-const PORT = 3000;
-
 // In-memory data for patients
 let patients = [];
 
-// Middleware
-app.use(bodyParser.json());
-app.use(express.static('public')); // Serve static files from the "public" folder
-
-// Add a new patient
-app.post('/add-patient', (req, res) => {
-    const { injury, painLevel } = req.body;
-
+/**
+ * Add a new patient to the queue.
+ * @param {string} injury - Type of injury.
+ * @param {number} painLevel - Pain level (1-10).
+ * @returns {object} - The newly added patient with estimated wait time.
+ */
+function addPatient(injury, painLevel) {
     if (!injury || typeof painLevel !== 'number') {
-        return res.status(400).json({ error: 'Injury and pain level are required.' });
+        throw new Error("Invalid injury or pain level");
     }
+
+    console.log("Adding patient with:", { injury, painLevel });
 
     const newPatient = {
         id: patients.length + 1,
         injury,
         painLevel,
-        timestamp: Date.now()
+        timestamp: Date.now(),
     };
 
     patients.push(newPatient);
-    res.status(201).json(newPatient);
-});
 
-// Get all patients
-app.get('/get-patients', (req, res) => {
-    const sortedPatients = patients.sort((a, b) => {
+    // Calculate approximate wait time (e.g., based on queue length or pain level)
+    const waitTime = patients.length * 10; // Example: 10 minutes per patient
+    return { ...newPatient, waitTime };
+}
+
+/**
+ * Get the list of patients sorted by priority (pain level and timestamp).
+ * @returns {Array} - Sorted list of patients.
+ */
+function getPatients() {
+    return patients.sort((a, b) => {
         if (b.painLevel !== a.painLevel) return b.painLevel - a.painLevel;
         return a.timestamp - b.timestamp;
     });
-    res.status(200).json(sortedPatients);
-});
+}
 
-// Mark a patient as treated
-app.post('/mark-as-treated', (req, res) => {
-    const { id } = req.body;
+/**
+ * Mark a patient as treated and remove them from the queue.
+ * @param {number} id - ID of the patient to mark as treated.
+ * @returns {boolean} - True if the patient was successfully removed, false otherwise.
+ */
+function markAsTreated(id) {
     const index = patients.findIndex(patient => patient.id === id);
-
     if (index !== -1) {
         patients.splice(index, 1);
-        res.status(200).json({ message: 'Patient removed from the queue.' });
-    } else {
-        res.status(404).json({ error: 'Patient not found.' });
+        return true;
     }
-});
+    return false;
+}
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+module.exports = { addPatient, getPatients, markAsTreated };

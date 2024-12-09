@@ -21,7 +21,7 @@
 
     <main class="content-area">
         <!-- Admin Login Section -->
-        <section id="admin-login" class="section-area hidden">
+        <section id="admin-login" class="section-area" style="display: none;">
             <h2 class="section-title">Administrator Login</h2>
             <p class="section-description">Log in to manage the triage system and oversee the emergency room queue.</p>
             <form id="admin-login-form" class="login-form">
@@ -36,10 +36,11 @@
         </section>
 
         <!-- Admin Dashboard Section -->
-        <section id="admin-view" class="section-area hidden">
+        <section id="admin-dashboard" class="section-area" style="display: none;">
             <h2 class="section-title">Admin Dashboard</h2>
             <p class="section-description">View and manage the list of patients currently in the emergency room.</p>
             <button id="refresh-queue" class="btn-action">Refresh Queue</button>
+            <button id="logout-button" class="btn-action">Logout</button>
             <table class="patient-table">
                 <thead>
                     <tr>
@@ -55,12 +56,13 @@
                 </tbody>
             </table>
         </section>
+        
 
         <!-- Patient Submission Section -->
-        <section id="patient-view" class="section-area hidden">
+        <section id="patient-form" class="section-area" style="display: none;">
             <h2 class="section-title">Patient Information</h2>
             <p class="section-description">Provide your details to get an estimate of your wait time in the emergency queue.</p>
-            <form id="patient-form" class="submission-form">
+            <form id="patient-input-form" class="submission-form">
                 <label for="injury">Injury Type:</label>
                 <select id="injury" class="form-input" required>
                     <option value="">Choose Injury</option>
@@ -72,7 +74,7 @@
                     <option value="Bone/Muscle">Bone or Muscle</option>
                     <option value="Burn/Cut">Burn or Cut</option>
                 </select>
-
+        
                 <label for="pain-level">Pain Level (1-10):</label>
                 <input type="number" id="pain-level" class="form-input" min="1" max="10" placeholder="Rate your pain" required>
                 
@@ -80,12 +82,13 @@
             </form>
             <p id="wait-time" class="wait-time-info"></p>
         </section>
+        
     </main>
 
     <footer class="footer-area">
         <p>&copy; 2024 Hospital Triage App | All Rights Reserved</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>

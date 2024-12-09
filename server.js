@@ -53,6 +53,7 @@ app.post('/add-patient', (req, res) => {
         const newPatient = addPatient(injury, painLevel);
         res.status(201).json(newPatient);
     } catch (err) {
+        console.error("Error adding patient:", err.message);
         res.status(500).json({ error: 'Could not add patient.' });
     }
 });
@@ -66,6 +67,7 @@ app.get('/get-patients', (req, res) => {
         const patients = getPatients();
         res.status(200).json(patients);
     } catch (err) {
+        console.error("Error fetching patients:", err.message);
         res.status(500).json({ error: 'Could not retrieve patients.' });
     }
 });
@@ -78,7 +80,6 @@ app.get('/get-patients', (req, res) => {
 app.post('/mark-as-treated', (req, res) => {
     const { id } = req.body;
 
-    // Validate input
     if (!id || typeof id !== 'number') {
         return res.status(400).json({ error: 'Valid patient ID is required.' });
     }
@@ -91,6 +92,7 @@ app.post('/mark-as-treated', (req, res) => {
             res.status(404).json({ error: 'Patient not found.' });
         }
     } catch (err) {
+        console.error("Error marking patient as treated:", err.message);
         res.status(500).json({ error: 'Could not mark patient as treated.' });
     }
 });
@@ -98,12 +100,6 @@ app.post('/mark-as-treated', (req, res) => {
 // Fallback route for undefined endpoints
 app.use((req, res) => {
     res.status(404).json({ error: 'Endpoint not found.' });
-});
-
-// Global error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack); // Log the error stack for debugging
-    res.status(500).json({ error: 'Something went wrong. Please try again later.' });
 });
 
 // Start the server
