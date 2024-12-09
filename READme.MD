@@ -122,12 +122,6 @@ This application is designed to manage and streamline patient queues in emergenc
 
 ----------
 
-## Future Improvements
-
--   Add user authentication for patients.
--   Enable role-based authorization for API endpoints.
--   Integrate a database for persistent data storage.
-
 ----------
 
 ## Code Overview
