@@ -122,8 +122,6 @@ This application is designed to manage and streamline patient queues in emergenc
 
 ----------
 
-----------
-
 ## Code Overview
 
 ### Role Selection Logic
