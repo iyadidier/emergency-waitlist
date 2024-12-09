@@ -1,64 +1,112 @@
-// server.js
+// Import required modules
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-const { Client } = require('pg');
-const WebSocket = require('ws');
+const morgan = require('morgan'); // For logging HTTP requests
+const { addPatient, getPatients, markAsTreated } = require('./get_patients');
 
+// Create the Express app
 const app = express();
-const client = new Client({
-    host: 'localhost',
-    port: 5432,
-    user: 'your_db_user',
-    password: 'your_db_password',
-    database: 'hospital_triage',
-});
+const PORT = 3000;
 
-client.connect();
+// Admin credentials
+const adminCredentials = {
+    username: "admin",
+    password: "1234"
+};
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json()); // Parse incoming JSON payloads
+app.use(express.static('public')); // Serve static files from the "public" directory
+app.use(morgan('dev')); // Log HTTP requests for debugging
 
-// Serve index.html as the default route
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+// Routes
+
+/**
+ * Admin Login Route
+ * Endpoint: POST /admin-login
+ * Request Body: { username: string, password: string }
+ */
+app.post('/admin-login', (req, res) => {
+    const { username, password } = req.body;
+
+    if (username === adminCredentials.username && password === adminCredentials.password) {
+        res.status(200).json({ message: 'Login successful!' });
+    } else {
+        res.status(401).json({ error: 'Invalid username or password.' });
+    }
 });
 
-// Endpoint to get patient by 3-letter code
-app.post('/patient', (req, res) => {
-    const { name, code } = req.body;
+/**
+ * Add a new patient to the queue.
+ * Endpoint: POST /add-patient
+ * Request Body: { injury: string, painLevel: number }
+ */
+app.post('/add-patient', (req, res) => {
+    const { injury, painLevel } = req.body;
 
-    // Query database for patient by code
-    const query = 'SELECT * FROM patients WHERE patient_code = $1';
-    client.query(query, [code], (err, result) => {
-        if (err) {
-            return res.status(500).send('Error retrieving patient data');
-        }
-        if (result.rows.length > 0) {
-            return res.json(result.rows[0]); // Send patient data back
+    // Validate input
+    if (!injury || typeof painLevel !== 'number') {
+        return res.status(400).json({ error: 'Injury and pain level are required and must be valid.' });
+    }
+
+    try {
+        const newPatient = addPatient(injury, painLevel);
+        res.status(201).json(newPatient);
+    } catch (err) {
+        res.status(500).json({ error: 'Could not add patient.' });
+    }
+});
+
+/**
+ * Get the sorted list of all patients.
+ * Endpoint: GET /get-patients
+ */
+app.get('/get-patients', (req, res) => {
+    try {
+        const patients = getPatients();
+        res.status(200).json(patients);
+    } catch (err) {
+        res.status(500).json({ error: 'Could not retrieve patients.' });
+    }
+});
+
+/**
+ * Mark a patient as treated.
+ * Endpoint: POST /mark-as-treated
+ * Request Body: { id: number }
+ */
+app.post('/mark-as-treated', (req, res) => {
+    const { id } = req.body;
+
+    // Validate input
+    if (!id || typeof id !== 'number') {
+        return res.status(400).json({ error: 'Valid patient ID is required.' });
+    }
+
+    try {
+        const success = markAsTreated(id);
+        if (success) {
+            res.status(200).json({ message: 'Patient marked as treated.' });
         } else {
-            return res.status(404).send('Patient not found');
+            res.status(404).json({ error: 'Patient not found.' });
         }
-    });
+    } catch (err) {
+        res.status(500).json({ error: 'Could not mark patient as treated.' });
+    }
 });
 
-// WebSocket for real-time updates
-const wss = new WebSocket.Server({ port: 8080 });
+// Fallback route for undefined endpoints
+app.use((req, res) => {
+    res.status(404).json({ error: 'Endpoint not found.' });
+});
 
-wss.on('connection', (ws) => {
-    console.log('Client connected');
-
-    // Send a message every time a new patient arrives or wait time changes
-    setInterval(() => {
-        ws.send('Updated wait time information');
-    }, 10000); // Send updates every 10 seconds
+// Global error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack); // Log the error stack for debugging
+    res.status(500).json({ error: 'Something went wrong. Please try again later.' });
 });
 
 // Start the server
-const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

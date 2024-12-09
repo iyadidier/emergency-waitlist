@@ -1,0 +1,167 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fb; /* Light, soft gray-blue background */
+    color: #333;
+}
+
+header, footer {
+    text-align: center;
+    padding: 25px;
+    background-color: #4e73df; /* Soft blue for header and footer */
+    color: white;
+    border-bottom: 3px solid #2e59d9; /* Darker blue border */
+}
+
+main {
+    padding: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+h1, h2 {
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: #555; /* Slightly muted text color */
+}
+
+/* Utility Classes */
+.hidden {
+    display: none;
+}
+
+.btn-action {
+    display: inline-block;
+    padding: 12px 24px;
+    color: white;
+    background-color: #6c5ce7; /* Lavender for buttons */
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-action:hover {
+    background-color: #5e50e6; /* Slightly darker lavender */
+    transform: scale(1.05);
+}
+
+.form-input, .role-dropdown {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus, .role-dropdown:focus {
+    border-color: #6c5ce7; /* Lavender focus for inputs */
+    outline: none;
+}
+
+.role-dropdown {
+    background-color: #f1f8ff;
+}
+
+.patient-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.patient-table th, .patient-table td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #f1f1f1;
+    color: #333;
+}
+
+.patient-table th {
+    background-color: #4e73df; /* Soft blue for header cells */
+    color: white;
+}
+
+.patient-table td {
+    background-color: #fafafa;
+}
+
+.patient-table tr:hover {
+    background-color: #f1f8ff; /* Soft hover effect */
+}
+
+.section-area {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.section-description {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.wait-time-info {
+    color: #ff9f00; /* Warm accent color for wait-time info */
+    font-size: 1.1rem;
+    margin-top: 20px;
+}
+
+.footer-area {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: #f4f4f4;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    header, footer {
+        padding: 20px;
+    }
+
+    main {
+        padding: 15px;
+    }
+
+    .btn-action {
+        padding: 10px 18px;
+        font-size: 1rem;
+    }
+
+    .form-input, .role-dropdown {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    .section-description {
+        font-size: 1rem;
+    }
+}
